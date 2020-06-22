@@ -246,9 +246,19 @@ var Plugin = function () {
         }
     }, {
         key: "unmount",
-        value: function unmount() {}
-        // this is unmount method rewritten by class extending
-        // and is executed when swup with plugin is disabled
+        value: function unmount() {
+            // this is unmount method rewritten by class extending
+            // and is executed when swup with plugin is disabled
+        }
+    }, {
+        key: "_beforeMount",
+        value: function _beforeMount() {
+            // here for any future hidden auto init
+        }
+    }, {
+        key: "_afterUnmount",
+        value: function _afterUnmount() {}
+        // here for any future hidden auto-cleanup
 
 
         // this is here so we can tell if plugin was created by extending this class
