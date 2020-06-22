@@ -15,3 +15,4 @@ wiki-wishlist
 .idea
 lib
 /plugins
+/.vscode/tasks.json
