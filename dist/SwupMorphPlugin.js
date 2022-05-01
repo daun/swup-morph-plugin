@@ -128,9 +128,9 @@ var _plugin = __webpack_require__(2);
 
 var _plugin2 = _interopRequireDefault(_plugin);
 
-var _morphdom = __webpack_require__(3);
+var _morph = __webpack_require__(3);
 
-var _morphdom2 = _interopRequireDefault(_morphdom);
+var _morph2 = _interopRequireDefault(_morph);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -151,7 +151,8 @@ var SwupMorphPlugin = function (_Plugin) {
 		_this.name = 'SwupMorphPlugin';
 
 		var defaultOptions = {
-			containers: []
+			containers: [],
+			updateCallbacks: []
 		};
 
 		_this.options = _extends({}, defaultOptions, options);
@@ -199,13 +200,14 @@ var SwupMorphPlugin = function (_Plugin) {
 		value: function morphContainers() {
 			var containers = this.getContainers();
 			var newContainers = this.getNewContainers();
+			var callbacks = this.options.updateCallbacks || [];
 
 			containers.forEach(function (_ref, index) {
 				var element = _ref.element;
 				var newElement = newContainers[index].element;
 
 				if (element && newElement) {
-					(0, _morphdom2.default)(element, newElement);
+					(0, _morph2.default)(element, newElement, callbacks);
 				}
 			});
 		}
@@ -272,6 +274,119 @@ exports.default = Plugin;
 
 /***/ }),
 /* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.shouldMorphCallbacks = exports.isTextInput = exports.isMutableElement = undefined;
+
+var _morphdom = __webpack_require__(4);
+
+var _morphdom2 = _interopRequireDefault(_morphdom);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+/**
+ * Morph dom nodes using morphdom, adding helpers and callbacks
+ */
+
+var inputTags = {
+	INPUT: true,
+	TEXTAREA: true,
+	SELECT: true
+};
+
+var mutableTags = {
+	INPUT: true,
+	TEXTAREA: true,
+	OPTION: true
+};
+
+var textInputTypes = {
+	'datetime-local': true,
+	'select-multiple': true,
+	'select-one': true,
+	color: true,
+	date: true,
+	datetime: true,
+	email: true,
+	month: true,
+	number: true,
+	password: true,
+	range: true,
+	search: true,
+	tel: true,
+	text: true,
+	textarea: true,
+	time: true,
+	url: true,
+	week: true
+};
+
+var permanentAttributeName = 'data-morph-persist';
+
+var isMutableElement = exports.isMutableElement = function isMutableElement(el) {
+	return mutableTags[el.tagName];
+};
+
+var isTextInput = exports.isTextInput = function isTextInput(el) {
+	return inputTags[el.tagName] && textInputTypes[el.type];
+};
+
+var verifyNotMutable = function verifyNotMutable(fromEl, toEl) {
+	// Skip nodes that are equal:
+	// https://github.com/patrick-steele-idem/morphdom#can-i-make-morphdom-blaze-through-the-dom-tree-even-faster-yes
+	if (!isMutableElement(fromEl) && fromEl.isEqualNode(toEl)) return false;
+	return true;
+};
+
+var verifyNotPermanent = function verifyNotPermanent(fromEl, toEl) {
+	var permanent = fromEl.closest('[' + permanentAttributeName + ']');
+
+	// only morph attributes on the active non-permanent text input
+	if (!permanent && isTextInput(fromEl) && fromEl === document.activeElement) {
+		var ignore = { value: true };
+		Array.from(toEl.attributes).forEach(function (attribute) {
+			if (!ignore[attribute.name]) fromEl.setAttribute(attribute.name, attribute.value);
+		});
+		return false;
+	}
+
+	return !permanent;
+};
+
+var shouldMorphCallbacks = exports.shouldMorphCallbacks = [verifyNotMutable, verifyNotPermanent];
+
+var shouldMorph = function shouldMorph(fromEl, toEl) {
+	var callbacks = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
+
+	var callbackResults = callbacks.map(function (callback) {
+		return typeof callback === 'function' ? callback(fromEl, toEl) : true;
+	});
+	return !callbackResults.includes(false);
+};
+
+var morph = function morph(from, to) {
+	var updateCallbacks = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
+
+	var callbacks = [].concat(shouldMorphCallbacks, _toConsumableArray(updateCallbacks));
+	(0, _morphdom2.default)(from, to, {
+		onBeforeElUpdated: function onBeforeElUpdated(fromEl, toEl) {
+			return shouldMorph(fromEl, toEl, callbacks);
+		}
+	});
+};
+
+exports.default = morph;
+
+/***/ }),
+/* 4 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
