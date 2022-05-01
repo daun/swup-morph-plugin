@@ -41,7 +41,7 @@ export default class SwupMorphPlugin extends Plugin {
 
 	getNewDocument() {
 		const pageContent = this.swup.cache.getCurrentPage().originalContent;
-		let newDocument = document.createElement('div');
+		const newDocument = document.createElement('div');
 		newDocument.innerHTML = pageContent;
 		return newDocument;
 	}
