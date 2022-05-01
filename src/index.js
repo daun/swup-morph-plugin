@@ -1,5 +1,5 @@
 import Plugin from '@swup/plugin';
-import morphdom from 'morphdom';
+import morph from './morph';
 
 export default class SwupMorphPlugin extends Plugin {
 	name = 'SwupMorphPlugin';
@@ -7,7 +7,8 @@ export default class SwupMorphPlugin extends Plugin {
 	constructor(options) {
 		super();
 		const defaultOptions = {
-			containers: []
+			containers: [],
+			updateCallbacks: []
 		};
 
 		this.options = {
@@ -48,11 +49,12 @@ export default class SwupMorphPlugin extends Plugin {
 	morphContainers() {
 		const containers = this.getContainers();
 		const newContainers = this.getNewContainers();
+		const callbacks = this.options.updateCallbacks || [];
 
 		containers.forEach(({ element }, index) => {
 			const { element: newElement } = newContainers[index];
 			if (element && newElement) {
-				morphdom(element, newElement);
+				morph(element, newElement, callbacks);
 			}
 		});
 	}
