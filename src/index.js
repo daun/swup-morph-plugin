@@ -20,11 +20,22 @@ export default class SwupMorphPlugin extends Plugin {
 	}
 
 	mount() {
+		this.validateContainers();
 		this.swup.on('contentReplaced', this.contentReplacedHandler);
 	}
 
 	unmount() {
 		this.swup.off('contentReplaced', this.contentReplacedHandler);
+	}
+
+	validateContainers() {
+		this.swup.options.containers.forEach((entry) => {
+			if (this.options.containers.includes(entry)) {
+				throw new Error(
+					`[swup-morph-plugin] Please remove '${entry}' from the swup main options to let morph plugin take over.`
+				);
+			}
+		});
 	}
 
 	getContainers(doc = document) {
