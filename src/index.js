@@ -32,7 +32,7 @@ export default class SwupMorphPlugin extends Plugin {
 		this.swup.options.containers.forEach((entry) => {
 			if (this.options.containers.includes(entry)) {
 				throw new Error(
-					`[swup-morph-plugin] '${entry}' is already being used as a container by swup. Please remove it from the swup main options to let morph plugin take over.`
+					`[swup-morph-plugin] Please remove '${entry}' from the swup main options to let morph plugin take over.`
 				);
 			}
 		});
