@@ -1,6 +1,6 @@
 {
   "name": "swup-morph-plugin",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Swup plugin to morph DOM nodes into new page.",
   "main": "lib/index.js",
   "scripts": {
