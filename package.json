@@ -34,7 +34,7 @@
     "morphdom": "^2.6.1"
   },
   "peerDependencies": {
-    "swup": "^3.0.0"
+    "swup": "^4.0.0"
   },
   "browserslist": [
     "extends @swup/browserslist-config"
