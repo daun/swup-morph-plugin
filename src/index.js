@@ -4,6 +4,8 @@ import morph from './morph';
 export default class SwupMorphPlugin extends Plugin {
 	name = 'SwupMorphPlugin';
 
+	requires = { swup: '>=4' };
+
 	constructor(options) {
 		super();
 		const defaultOptions = {
