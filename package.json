@@ -1,7 +1,7 @@
 {
   "name": "swup-morph-plugin",
-  "version": "0.2.1",
   "amdName": "SwupMorphPlugin",
+  "version": "1.0.0",
   "description": "A swup plugin for morphing dom nodes into the new page",
   "type": "module",
   "source": "src/index.js",
@@ -34,7 +34,7 @@
     "morphdom": "^2.6.1"
   },
   "peerDependencies": {
-    "swup": "^4.0.0"
+    "swup": "^3.0.0"
   },
   "browserslist": [
     "extends @swup/browserslist-config"
