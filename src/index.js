@@ -6,17 +6,15 @@ export default class SwupMorphPlugin extends Plugin {
 
 	requires = { swup: '>=4' };
 
+	defaults = {
+		containers: [],
+		updateCallbacks: []
+	};
+
 	constructor(options) {
 		super();
-		const defaultOptions = {
-			containers: [],
-			updateCallbacks: []
-		};
 
-		this.options = {
-			...defaultOptions,
-			...options
-		};
+		this.options = { ...this.defaults, ...options };
 
 		this.validateContainers = this.validateContainers.bind(this);
 		this.morphContainers = this.morphContainers.bind(this);
