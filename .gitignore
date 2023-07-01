@@ -13,6 +13,5 @@ wiki-wishlist
 *.sublime-workspace
 .editorconfig
 .idea
-lib
-/plugins
-/.vscode/tasks.json
+.vscode
+/dist
