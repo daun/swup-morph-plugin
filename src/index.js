@@ -42,9 +42,9 @@ export default class SwupMorphPlugin extends Plugin {
 		return this.getContainers(doc);
 	}
 
-	validateContainers(context, args) {
+	validateContainers(context) {
     // Filter out containers that are already managed by the morph plugin
-		args.containers = args.containers.filter(selector => !this.options.containers.includes(selector));
+		context.containers = context.containers.filter(selector => !this.options.containers.includes(selector));
 	}
 
 	morphContainers(context, { page }) {
