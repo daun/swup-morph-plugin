@@ -21,13 +21,13 @@ export default class SwupMorphPlugin extends Plugin {
 	}
 
 	mount() {
-		this.swup.hooks.before('replaceContent', this.validateContainers);
-		this.swup.hooks.on('replaceContent', this.morphContainers);
+		this.swup.hooks.before('content:replace', this.validateContainers);
+		this.swup.hooks.on('content:replace', this.morphContainers);
 	}
 
 	unmount() {
-		this.swup.hooks.off('replaceContent', this.validateContainers);
-		this.swup.hooks.off('replaceContent', this.morphContainers);
+		this.swup.hooks.off('content:replace', this.validateContainers);
+		this.swup.hooks.off('content:replace', this.morphContainers);
 	}
 
 	getContainers(doc = document) {
