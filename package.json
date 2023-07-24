@@ -30,7 +30,7 @@
     "url": "https://github.com/daun/swup-morph-plugin.git"
   },
   "dependencies": {
-    "@swup/plugin": "^2.0.0",
+    "@swup/plugin": "^3.0.0",
     "morphdom": "^2.6.1"
   },
   "peerDependencies": {
