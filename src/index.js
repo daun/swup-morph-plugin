@@ -23,7 +23,7 @@ export default class SwupMorphPlugin extends Plugin {
 
 	validateContainers(visit) {
     // Filter out containers that are already managed by the morph plugin
-		context.containers = context.containers.filter(selector => !this.options.containers.includes(selector));
+		visit.containers = visit.containers.filter(selector => !this.options.containers.includes(selector));
 	}
 
 	morphContainers(visit, { page }) {
