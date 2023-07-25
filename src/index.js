@@ -31,10 +31,12 @@ export default class SwupMorphPlugin extends Plugin {
 		const newContainers = this.getNewContainers(page);
 		const callbacks = this.options.updateCallbacks || [];
 
-		containers.forEach(({ element }, index) => {
+		containers.forEach(({ element, selector }, index) => {
 			const { element: newElement } = newContainers[index];
 			if (element && newElement) {
 				morph(element, newElement, callbacks);
+			} else {
+				console.warn(`SwupMorphPlugin: No container found for selector: ${selector}`);
 			}
 		});
 	}
