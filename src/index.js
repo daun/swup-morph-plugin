@@ -4,36 +4,39 @@ import morph from './morph';
 export default class SwupMorphPlugin extends Plugin {
 	name = 'SwupMorphPlugin';
 
+	requires = { swup: '>=4' };
+
+	defaults = {
+		containers: [],
+		updateCallbacks: []
+	};
+
 	constructor(options) {
 		super();
-		const defaultOptions = {
-			containers: [],
-			updateCallbacks: []
-		};
-
-		this.options = {
-			...defaultOptions,
-			...options
-		};
-
-		this.contentReplacedHandler = this.morphContainers.bind(this);
+		this.options = { ...this.defaults, ...options };
 	}
 
 	mount() {
-		this.validateContainers();
-		this.swup.on('contentReplaced', this.contentReplacedHandler);
+		this.before('content:replace', this.validateContainers, { priority: 1 });
+		this.on('content:replace', this.morphContainers);
 	}
 
-	unmount() {
-		this.swup.off('contentReplaced', this.contentReplacedHandler);
+	validateContainers(visit) {
+    // Filter out containers that are already managed by the morph plugin
+		visit.containers = visit.containers.filter(selector => !this.options.containers.includes(selector));
 	}
 
-	validateContainers() {
-		this.swup.options.containers.forEach((entry) => {
-			if (this.options.containers.includes(entry)) {
-				throw new Error(
-					`[swup-morph-plugin] Please remove '${entry}' from the swup main options to let morph plugin take over.`
-				);
+	morphContainers(visit, { page }) {
+		const containers = this.getContainers();
+		const newContainers = this.getNewContainers(page);
+		const callbacks = this.options.updateCallbacks || [];
+
+		containers.forEach(({ element, selector }, index) => {
+			const { element: newElement } = newContainers[index];
+			if (element && newElement) {
+				morph(element, newElement, callbacks);
+			} else {
+				console.warn(`SwupMorphPlugin: No container found for selector: ${selector}`);
 			}
 		});
 	}
@@ -45,28 +48,8 @@ export default class SwupMorphPlugin extends Plugin {
 		});
 	}
 
-	getNewContainers() {
-		const newDocument = this.getNewDocument();
-		return this.getContainers(newDocument);
-	}
-
-	getNewDocument() {
-		const pageContent = this.swup.cache.getCurrentPage().originalContent;
-		const newDocument = document.createElement('div');
-		newDocument.innerHTML = pageContent;
-		return newDocument;
-	}
-
-	morphContainers() {
-		const containers = this.getContainers();
-		const newContainers = this.getNewContainers();
-		const callbacks = this.options.updateCallbacks || [];
-
-		containers.forEach(({ element }, index) => {
-			const { element: newElement } = newContainers[index];
-			if (element && newElement) {
-				morph(element, newElement, callbacks);
-			}
-		});
+	getNewContainers({ html }) {
+		const doc = new DOMParser().parseFromString(html, 'text/html');
+		return this.getContainers(doc);
 	}
 }

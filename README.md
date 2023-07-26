@@ -1,10 +1,11 @@
-# Swup Morph plugin
+# Swup Morph Plugin
 
-This [swup](https://github.com/swup/swup) plugin allows morphing containers
-into the new page without replacing or animating them. The prime use case are
-headers and menus on multi-language sites: you might not want to swap these
-elements out with a transition on each page visit, however you'd still want to
-update any URLs, labels or classnames when the user switches between languages.
+A [swup](https://swup.js.org) plugin for morphing dom nodes into the new page.
+
+Allows morphing containers into the new page without replacing or animating them. The prime use
+cases are headers and menus on multi-language sites: you might not want to swap these elements out
+with a transition on each page visit, however you'd still want to update any URLs, labels or
+classnames when the user switches between languages.
 
 Behind the scenes, it uses
 [morphdom](https://github.com/patrick-steele-idem/morphdom) to update the
@@ -14,22 +15,20 @@ on the target.
 
 ## Installation
 
-This plugin can be installed with npm
+Install the plugin from npm and import it into your bundle.
 
 ```bash
 npm install swup-morph-plugin
 ```
 
-and included with import
-
-```shell
+```js
 import SwupMorphPlugin from 'swup-morph-plugin';
 ```
 
-or included from the dist folder
+Or include the minified production file from a CDN:
 
 ```html
-<script src="./dist/SwupMorphPlugin.js"></script>
+<script src="https://unpkg.com/swup-morph-plugin@1"></script>
 ```
 
 ## Usage
