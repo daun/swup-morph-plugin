@@ -1,17 +1,29 @@
+import type { Handler, PageData } from 'swup';
 import Plugin from '@swup/plugin';
-import morph from './morph';
+
+import morph, { type UpdateCallback } from './morph.js';
+
+type RequireKeys<T extends object, K extends keyof T> = Required<Pick<T, K>> & Omit<T, K>;
+
+type Options = {
+	containers: string[],
+	updateCallbacks: UpdateCallback[]
+};
+
+type InitOptions = RequireKeys<Options, 'containers'>;
 
 export default class SwupMorphPlugin extends Plugin {
 	name = 'SwupMorphPlugin';
 
 	requires = { swup: '>=4' };
 
-	defaults = {
+	defaults: Options = {
 		containers: [],
 		updateCallbacks: []
 	};
+	options: Options;
 
-	constructor(options) {
+	constructor(options: InitOptions) {
 		super();
 		this.options = { ...this.defaults, ...options };
 	}
@@ -21,12 +33,12 @@ export default class SwupMorphPlugin extends Plugin {
 		this.on('content:replace', this.morphContainers);
 	}
 
-	validateContainers(visit) {
+	validateContainers: Handler<'content:replace'> = (visit) => {
     // Filter out containers that are already managed by the morph plugin
 		visit.containers = visit.containers.filter(selector => !this.options.containers.includes(selector));
 	}
 
-	morphContainers(visit, { page }) {
+	morphContainers: Handler<'content:replace'> = (visit, { page }) => {
 		const containers = this.getContainers();
 		const newContainers = this.getNewContainers(page);
 		const callbacks = this.options.updateCallbacks || [];
@@ -48,7 +60,7 @@ export default class SwupMorphPlugin extends Plugin {
 		});
 	}
 
-	getNewContainers({ html }) {
+	getNewContainers({ html }: PageData) {
 		const doc = new DOMParser().parseFromString(html, 'text/html');
 		return this.getContainers(doc);
 	}
