@@ -6,8 +6,8 @@ import morph, { type UpdateCallback } from './morph.js';
 type RequireKeys<T extends object, K extends keyof T> = Required<Pick<T, K>> & Omit<T, K>;
 
 type Options = {
-	containers: string[],
-	updateCallbacks: UpdateCallback[]
+	containers: string[];
+	updateCallbacks: UpdateCallback[];
 };
 
 type InitOptions = RequireKeys<Options, 'containers'>;
@@ -34,9 +34,11 @@ export default class SwupMorphPlugin extends Plugin {
 	}
 
 	validateContainers: Handler<'content:replace'> = (visit) => {
-    // Filter out containers that are already managed by the morph plugin
-		visit.containers = visit.containers.filter(selector => !this.options.containers.includes(selector));
-	}
+		// Filter out containers that are already managed by the morph plugin
+		visit.containers = visit.containers.filter(
+			(selector) => !this.options.containers.includes(selector)
+		);
+	};
 
 	morphContainers: Handler<'content:replace'> = (visit, { page }) => {
 		const containers = this.getContainers();
@@ -51,7 +53,7 @@ export default class SwupMorphPlugin extends Plugin {
 				console.warn(`SwupMorphPlugin: No container found for selector: ${selector}`);
 			}
 		});
-	}
+	};
 
 	getContainers(doc = document) {
 		return this.options.containers.map((selector) => {

@@ -26,30 +26,30 @@ const textInputTypes: ElementPropertyMap = {
 	'datetime-local': true,
 	'select-multiple': true,
 	'select-one': true,
-	color: true,
-	date: true,
-	datetime: true,
-	email: true,
-	month: true,
-	number: true,
-	password: true,
-	range: true,
-	search: true,
-	tel: true,
-	text: true,
-	textarea: true,
-	time: true,
-	url: true,
-	week: true
+	'color': true,
+	'date': true,
+	'datetime': true,
+	'email': true,
+	'month': true,
+	'number': true,
+	'password': true,
+	'range': true,
+	'search': true,
+	'tel': true,
+	'text': true,
+	'textarea': true,
+	'time': true,
+	'url': true,
+	'week': true
 };
 
 const permanentAttributeName = 'data-morph-persist';
 
-export function isMutableElement(el: HTMLElement): boolean {
+function isMutableElement(el: HTMLElement): boolean {
 	return mutableTags[el.tagName];
 }
 
-export function isTextInput(el: HTMLElement): boolean {
+function isTextInput(el: HTMLElement): boolean {
 	return inputTags[el.tagName] && textInputTypes[(el as HTMLInputElement).type];
 }
 
@@ -57,7 +57,7 @@ function verifyNotMutable(fromEl: HTMLElement, toEl: HTMLElement): boolean {
 	// Skip nodes that are equal: https://github.com/patrick-steele-idem/morphdom#can-i-make-morphdom-blaze-through-the-dom-tree-even-faster-yes
 	if (!isMutableElement(fromEl) && fromEl.isEqualNode(toEl)) return false;
 	return true;
-};
+}
 
 function verifyNotPermanent(fromEl: HTMLElement, toEl: HTMLElement): boolean {
 	const permanent = fromEl.closest(`[${permanentAttributeName}]`);
