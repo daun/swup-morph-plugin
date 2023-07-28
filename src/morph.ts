@@ -72,9 +72,14 @@ function verifyNotPermanent(fromEl: HTMLElement, toEl: HTMLElement): boolean {
 	}
 
 	return !permanent;
-};
+}
 
-export const shouldMorphCallbacks = [verifyNotMutable, verifyNotPermanent];
+function verifyNotContentEditable(fromEl: HTMLElement, toEl: HTMLElement): boolean {
+	if (fromEl === document.activeElement && fromEl.isContentEditable) return false;
+	return true;
+}
+
+const shouldMorphCallbacks = [verifyNotMutable, verifyNotPermanent, verifyNotContentEditable];
 
 function shouldMorph(fromEl: HTMLElement, toEl: HTMLElement, callbacks: UpdateCallback[]): boolean {
 	const callbackResults = callbacks.map((callback) => {
