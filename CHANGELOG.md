@@ -2,6 +2,12 @@
 
 <!-- ## [Unreleased] -->
 
+## [1.1.0] - 2023-07-28
+
+- Port to TypeScript
+- Update morphdom
+- Skip contenteditable elements with focus
+
 ## [1.0.0] - 2023-07-26
 
 - Switch to microbundle
@@ -20,8 +26,9 @@
 
 - Initial release
 
-[Unreleased]: https://github.com/swup-morph-plugin/compare/1.0.0...HEAD
+[Unreleased]: https://github.com/swup-morph-plugin/compare/1.1.0...HEAD
 
+[1.1.0]: https://github.com/swup-morph-plugin/releases/tag/1.1.0
 [1.0.0]: https://github.com/swup-morph-plugin/releases/tag/1.0.0
 [0.2.1]: https://github.com/swup-morph-plugin/releases/tag/0.2.1
 [0.2.0]: https://github.com/swup-morph-plugin/releases/tag/0.2.0
