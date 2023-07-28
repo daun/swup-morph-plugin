@@ -17,7 +17,7 @@
     "dev": "swup-plugin dev",
     "lint": "swup-plugin lint",
     "format": "swup-plugin format",
-    "prepublish": "npm run build"
+    "prepublishOnly": "npm run build"
   },
   "author": {
     "name": "Philipp Daun",
