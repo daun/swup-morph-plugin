@@ -3,7 +3,7 @@ import Plugin from '@swup/plugin';
 
 import morph, { type UpdateCallback } from './morph.js';
 
-type RequireKeys<T extends object, K extends keyof T> = Required<Pick<T, K>> & Omit<T, K>;
+type RequireKeys<T, K extends keyof T> = Partial<T> & Pick<T, K>;
 
 type Options = {
 	containers: string[];
