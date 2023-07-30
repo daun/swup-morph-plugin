@@ -2,6 +2,10 @@
 
 <!-- ## [Unreleased] -->
 
+## [1.1.1] - 2023-07-30
+
+- Fix options init type
+
 ## [1.1.0] - 2023-07-28
 
 - Port to TypeScript
@@ -26,8 +30,9 @@
 
 - Initial release
 
-[Unreleased]: https://github.com/swup-morph-plugin/compare/1.1.0...HEAD
+[Unreleased]: https://github.com/swup-morph-plugin/compare/1.1.1...HEAD
 
+[1.1.1]: https://github.com/swup-morph-plugin/releases/tag/1.1.1
 [1.1.0]: https://github.com/swup-morph-plugin/releases/tag/1.1.0
 [1.0.0]: https://github.com/swup-morph-plugin/releases/tag/1.0.0
 [0.2.1]: https://github.com/swup-morph-plugin/releases/tag/0.2.1
