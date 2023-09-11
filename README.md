@@ -41,11 +41,51 @@ const swup = new Swup({
 });
 ```
 
+## Morphed containers
+
+The plugin provides two ways of choosing the containers to be morphed:
+
+### Container option
+
+Pass in a list of selectors into the plugin options to let it know about morphable containers. Use
+this method if you have a limited and predictable number of containers to morph.
+
+```javascript
+new SwupMorphPlugin({
+  containers: ['#nav']
+})
+```
+
+```html
+<nav id="nav">
+  <!-- Morphed by this plugin -->
+</nav>
+<main id="swup">
+  <!-- Replaced normally by swup -->
+</main>
+```
+
+### Data attribute
+
+Add a `data-swup-morph` attribute with a **unique** identifier on containers to be morphed. The
+plugin will find all containers with this attribute and match the outgoing and incoming versions
+of each container by the value of the attribute. Use this method if you have lots of dynamically
+created morphable containers.
+
+```html
+<nav data-swup-morph="nav">
+  <!-- Morphed by this plugin -->
+</nav>
+<main id="swup">
+  <!-- Replaced normally by swup -->
+</main>
+```
+
 ## Options
 
 ### containers
 
-Array of DOM selectors that will be morphed into the new page. Required.
+Array of specific DOM selectors that will be morphed into the new page.
 
 ```javascript
 {

@@ -1,4 +1,4 @@
-import type { Handler, PageData } from 'swup';
+import { queryAll, type Handler } from 'swup';
 import Plugin from '@swup/plugin';
 
 import morph, { type UpdateCallback } from './morph.js';
@@ -40,30 +40,38 @@ export default class SwupMorphPlugin extends Plugin {
 		);
 	};
 
-	morphContainers: Handler<'content:replace'> = (visit, { page }) => {
-		const containers = this.getContainers();
-		const newContainers = this.getNewContainers(page);
+	morphContainers: Handler<'content:replace'> = (visit, { page: { html } }) => {
+		const documents: [Document, Document] = [document, new DOMParser().parseFromString(html, 'text/html')];
+		const containers = this.getContainers(...documents);
 		const callbacks = this.options.updateCallbacks || [];
 
-		containers.forEach(({ element, selector }, index) => {
-			const { element: newElement } = newContainers[index];
-			if (element && newElement) {
-				morph(element, newElement, callbacks);
-			} else {
+		for (const { selector, outgoing, incoming } of containers) {
+			if (outgoing && incoming) {
+				morph(outgoing, incoming, callbacks);
+			} else if (this.options.containers.includes(selector)) {
 				console.warn(`SwupMorphPlugin: No container found for selector: ${selector}`);
 			}
-		});
+		}
 	};
 
-	getContainers(doc = document) {
-		return this.options.containers.map((selector) => {
-			const element = doc.querySelector(selector);
-			return { element, selector };
+	getContainers(oldDoc: Document, newDoc: Document) {
+		const selectors = this.getContainerSelectors();
+		return selectors.map((selector) => {
+			const outgoing = oldDoc.querySelector(selector);
+			const incoming = newDoc.querySelector(selector);
+			return { selector, outgoing, incoming };
 		});
 	}
 
-	getNewContainers({ html }: PageData) {
-		const doc = new DOMParser().parseFromString(html, 'text/html');
-		return this.getContainers(doc);
+	getContainerSelectors() {
+		const explit = this.options.containers;
+		const implicit = queryAll('[data-swup-morph]:not([data-swup-morph=""])').map(
+			(el) => `[data-swup-morph='${el.dataset.swupMorph}']`
+		);
+		return this.uniq([...explit, ...implicit ]);
+	}
+
+	uniq<T>(array: T[]): T[] {
+		return [...new Set(array)];
 	}
 }
