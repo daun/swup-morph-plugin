@@ -3,14 +3,10 @@ import Plugin from '@swup/plugin';
 
 import morph, { type UpdateCallback } from './morph.js';
 
-type RequireKeys<T, K extends keyof T> = Partial<T> & Pick<T, K>;
-
 type Options = {
 	containers: string[];
 	updateCallbacks: UpdateCallback[];
 };
-
-type InitOptions = RequireKeys<Options, 'containers'>;
 
 export default class SwupMorphPlugin extends Plugin {
 	name = 'SwupMorphPlugin';
@@ -23,7 +19,7 @@ export default class SwupMorphPlugin extends Plugin {
 	};
 	options: Options;
 
-	constructor(options: InitOptions) {
+	constructor(options: Partial<Options> = {}) {
 		super();
 		this.options = { ...this.defaults, ...options };
 	}
