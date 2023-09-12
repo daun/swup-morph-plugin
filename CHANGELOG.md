@@ -2,6 +2,10 @@
 
 <!-- ## [Unreleased] -->
 
+## [1.2.1] - 2023-09-12
+
+- Make all plugin options optional
+
 ## [1.2.0] - 2023-09-11
 
 - Allow dynamic containers using `data-swup-morph` attribute
@@ -34,8 +38,9 @@
 
 - Initial release
 
-[Unreleased]: https://github.com/swup-morph-plugin/compare/1.2.0...HEAD
+[Unreleased]: https://github.com/swup-morph-plugin/compare/1.2.1...HEAD
 
+[1.2.1]: https://github.com/swup-morph-plugin/releases/tag/1.2.1
 [1.2.0]: https://github.com/swup-morph-plugin/releases/tag/1.2.0
 [1.1.1]: https://github.com/swup-morph-plugin/releases/tag/1.1.1
 [1.1.0]: https://github.com/swup-morph-plugin/releases/tag/1.1.0
