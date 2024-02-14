@@ -11,7 +11,7 @@ type Options = {
 export default class SwupMorphPlugin extends Plugin {
 	name = 'SwupMorphPlugin';
 
-	requires = { swup: '>=4' };
+	requires = { swup: '>=4.6' };
 
 	defaults: Options = {
 		containers: [],
