@@ -1,6 +1,8 @@
 # Changelog
 
-<!-- ## [Unreleased] -->
+## [1.3.0] - 2024-02-15
+
+- Re-use incoming document from visit object
 
 ## [1.2.1] - 2023-09-12
 
@@ -38,8 +40,7 @@
 
 - Initial release
 
-[Unreleased]: https://github.com/swup-morph-plugin/compare/1.2.1...HEAD
-
+[1.3.0]: https://github.com/swup-morph-plugin/releases/tag/1.3.0
 [1.2.1]: https://github.com/swup-morph-plugin/releases/tag/1.2.1
 [1.2.0]: https://github.com/swup-morph-plugin/releases/tag/1.2.0
 [1.1.1]: https://github.com/swup-morph-plugin/releases/tag/1.1.1
