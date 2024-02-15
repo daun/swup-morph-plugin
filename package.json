@@ -1,7 +1,7 @@
 {
   "name": "swup-morph-plugin",
   "amdName": "SwupMorphPlugin",
-  "version": "1.2.1",
+  "version": "1.3.0",
   "description": "A swup plugin for morphing dom nodes into the new page",
   "type": "module",
   "source": "src/index.ts",
