@@ -11,7 +11,7 @@ type Options = {
 export default class SwupMorphPlugin extends Plugin {
 	name = 'SwupMorphPlugin';
 
-	requires = { swup: '>=4' };
+	requires = { swup: '>=4.6' };
 
 	defaults: Options = {
 		containers: [],
@@ -29,16 +29,15 @@ export default class SwupMorphPlugin extends Plugin {
 		this.on('content:replace', this.morphContainers);
 	}
 
-	validateContainers: Handler<'content:replace'> = (visit) => {
+	protected validateContainers: Handler<'content:replace'> = (visit) => {
 		// Filter out containers that are already managed by the morph plugin
 		visit.containers = visit.containers.filter(
 			(selector) => !this.options.containers.includes(selector)
 		);
 	};
 
-	morphContainers: Handler<'content:replace'> = (visit, { page: { html } }) => {
-		const documents: [Document, Document] = [document, new DOMParser().parseFromString(html, 'text/html')];
-		const containers = this.getContainers(...documents);
+	protected morphContainers: Handler<'content:replace'> = (visit) => {
+		const containers = this.getContainers(document, visit.to.document!);
 		const callbacks = this.options.updateCallbacks || [];
 
 		for (const { selector, outgoing, incoming } of containers) {
@@ -50,7 +49,7 @@ export default class SwupMorphPlugin extends Plugin {
 		}
 	};
 
-	getContainers(oldDoc: Document, newDoc: Document) {
+	protected getContainers(oldDoc: Document, newDoc: Document) {
 		const selectors = this.getContainerSelectors();
 		return selectors.map((selector) => {
 			const outgoing = oldDoc.querySelector(selector);
@@ -59,7 +58,7 @@ export default class SwupMorphPlugin extends Plugin {
 		});
 	}
 
-	getContainerSelectors() {
+	protected getContainerSelectors() {
 		const explit = this.options.containers;
 		const implicit = queryAll('[data-swup-morph]:not([data-swup-morph=""])').map(
 			(el) => `[data-swup-morph='${el.dataset.swupMorph}']`
@@ -67,7 +66,7 @@ export default class SwupMorphPlugin extends Plugin {
 		return this.uniq([...explit, ...implicit ]);
 	}
 
-	uniq<T>(array: T[]): T[] {
+	protected uniq<T>(array: T[]): T[] {
 		return [...new Set(array)];
 	}
 }
