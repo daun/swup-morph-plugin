@@ -1,4 +1,4 @@
-import morphdom from 'morphdom';
+import { morph as morphlex } from 'morphlex';
 
 export type UpdateCallback = (fromEl: HTMLElement, toEl: HTMLElement) => boolean;
 
@@ -7,7 +7,7 @@ type ElementPropertyMap = {
 };
 
 /**
- * Morph dom nodes using morphdom, adding helpers and callbacks
+ * Morph dom nodes using morphlex, adding helpers and callbacks
  */
 
 const inputTags: ElementPropertyMap = {
@@ -54,7 +54,7 @@ function isTextInput(el: HTMLElement): boolean {
 }
 
 function verifyNotMutable(fromEl: HTMLElement, toEl: HTMLElement): boolean {
-	// Skip nodes that are equal: https://github.com/patrick-steele-idem/morphdom#can-i-make-morphdom-blaze-through-the-dom-tree-even-faster-yes
+	// Skip nodes that are equal to avoid unnecessary work on unchanged subtrees
 	if (!isMutableElement(fromEl) && fromEl.isEqualNode(toEl)) return false;
 	return true;
 }
@@ -88,10 +88,16 @@ function shouldMorph(fromEl: HTMLElement, toEl: HTMLElement, callbacks: UpdateCa
 	return !callbackResults.includes(false);
 }
 
-function morph(from: Node, to: Node | string, updateCallbacks: UpdateCallback[] = []): void {
+function morph(from: ChildNode, to: ChildNode | string, updateCallbacks: UpdateCallback[] = []): void {
 	const callbacks = [...shouldMorphCallbacks, ...updateCallbacks];
-	return morphdom(from, to, {
-		onBeforeElUpdated: (fromEl, toEl) => shouldMorph(fromEl, toEl, callbacks)
+	return morphlex(from, to, {
+		beforeNodeVisited: (fromNode, toNode) => {
+			// Only run element callbacks for element nodes, skip text/comment nodes
+			if (!(fromNode instanceof HTMLElement) || !(toNode instanceof HTMLElement)) {
+				return true;
+			}
+			return shouldMorph(fromNode, toNode, callbacks);
+		}
 	});
 }
 

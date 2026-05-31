@@ -8,7 +8,7 @@ with a transition on each page visit, however you'd still want to update any URL
 classnames when the user switches between languages.
 
 Behind the scenes, it uses
-[morphdom](https://github.com/patrick-steele-idem/morphdom) to update the
+[Morphlex](https://github.com/yippee-fun/morphlex) to update the
 existing DOM nodes to match the same DOM nodes on the new page being loaded.
 This will leave any event handlers in place, as opposed to setting `innerHTML`
 on the target.
@@ -99,8 +99,8 @@ Callbacks to run before elements are updated. This can be used to persist or
 discard certain attributes. If the callback returns `false`, the element will
 not be updated.
 
-See the [morphdom docs](https://github.com/patrick-steele-idem/morphdom#api) on
-the `onBeforeElUpdated` option for details.
+See the [Morphlex docs](https://github.com/yippee-fun/morphlex) on
+the `beforeNodeVisited` option for details.
 
 ```javascript
 {

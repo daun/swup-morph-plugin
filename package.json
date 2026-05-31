@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "@swup/plugin": "^4.0.0",
-    "morphdom": "^2.7.0"
+    "morphlex": "^1.4.0"
   },
   "devDependencies": {
     "@swup/cli": "^5.0.1"
