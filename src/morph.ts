@@ -69,7 +69,7 @@ function shouldMorph(fromEl: HTMLElement, toEl: HTMLElement, callbacks: UpdateCa
 
 function morph(from: ChildNode, to: ChildNode | string, updateCallbacks: UpdateCallback[] = []): void {
 	const callbacks = [...shouldMorphCallbacks, ...updateCallbacks];
-	return morphlex(from, to, {
+	morphlex(from, to, {
 		beforeNodeVisited: (fromNode, toNode) => {
 			// Only run element callbacks for element nodes, skip text/comment nodes
 			if (!(fromNode instanceof HTMLElement) || !(toNode instanceof HTMLElement)) {
