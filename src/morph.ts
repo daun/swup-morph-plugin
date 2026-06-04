@@ -16,12 +16,6 @@ const inputTags: ElementPropertyMap = {
 	SELECT: true
 };
 
-const mutableTags: ElementPropertyMap = {
-	INPUT: true,
-	TEXTAREA: true,
-	OPTION: true
-};
-
 const textInputTypes: ElementPropertyMap = {
 	'datetime-local': true,
 	'select-multiple': true,
@@ -45,18 +39,8 @@ const textInputTypes: ElementPropertyMap = {
 
 const permanentAttributeName = 'data-morph-persist';
 
-function isMutableElement(el: HTMLElement): boolean {
-	return mutableTags[el.tagName];
-}
-
 function isTextInput(el: HTMLElement): boolean {
 	return inputTags[el.tagName] && textInputTypes[(el as HTMLInputElement).type];
-}
-
-function verifyNotMutable(fromEl: HTMLElement, toEl: HTMLElement): boolean {
-	// Skip nodes that are equal to avoid unnecessary work on unchanged subtrees
-	if (!isMutableElement(fromEl) && fromEl.isEqualNode(toEl)) return false;
-	return true;
 }
 
 function verifyNotPermanent(fromEl: HTMLElement, toEl: HTMLElement): boolean {
@@ -79,7 +63,7 @@ function verifyNotContentEditable(fromEl: HTMLElement, toEl: HTMLElement): boole
 	return true;
 }
 
-const shouldMorphCallbacks = [verifyNotMutable, verifyNotPermanent, verifyNotContentEditable];
+const shouldMorphCallbacks = [verifyNotPermanent, verifyNotContentEditable];
 
 function shouldMorph(fromEl: HTMLElement, toEl: HTMLElement, callbacks: UpdateCallback[]): boolean {
 	const callbackResults = callbacks.map((callback) => {
