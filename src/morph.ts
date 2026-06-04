@@ -1,4 +1,4 @@
-import { morph as morphlex } from 'morphlex';
+import { type Options as MorphlexOptions, morph as morphlex } from 'morphlex';
 
 /**
  * Callback to decide whether an element should be morphed.
@@ -22,7 +22,8 @@ const builtInCallbacks: UpdateCallback[] = [isElementMorphable];
 function morph(
 	from: ChildNode,
 	to: ChildNode | string,
-	updateCallbacks: UpdateCallback[] = []
+	updateCallbacks: UpdateCallback[] = [],
+	morphlexOptions: MorphlexOptions = {}
 ): void {
 	const callbacks = [...builtInCallbacks, ...updateCallbacks];
 
@@ -37,7 +38,8 @@ function morph(
 			return callbacks
 				.filter((cb) => typeof cb === 'function')
 				.every((cb) => cb(fromNode, toNode) !== false);
-		}
+		},
+		...morphlexOptions
 	});
 }
 

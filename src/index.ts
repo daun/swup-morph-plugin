@@ -1,11 +1,13 @@
-import { queryAll, type Handler } from 'swup';
 import Plugin from '@swup/plugin';
+import type { Options as MorphlexOptions } from 'morphlex';
+import { type Handler, queryAll } from 'swup';
 
 import morph, { type UpdateCallback } from './morph.js';
 
 type Options = {
 	containers: string[];
 	updateCallbacks: UpdateCallback[];
+	morphlexOptions: MorphlexOptions;
 };
 
 export default class SwupMorphPlugin extends Plugin {
@@ -15,8 +17,10 @@ export default class SwupMorphPlugin extends Plugin {
 
 	defaults: Options = {
 		containers: [],
-		updateCallbacks: []
+		updateCallbacks: [],
+		morphlexOptions: {}
 	};
+
 	options: Options;
 
 	constructor(options: Partial<Options> = {}) {
@@ -38,11 +42,11 @@ export default class SwupMorphPlugin extends Plugin {
 
 	protected morphContainers: Handler<'content:replace'> = (visit) => {
 		const containers = this.getContainers(document, visit.to.document!);
-		const callbacks = this.options.updateCallbacks || [];
+		const { updateCallbacks = [], morphlexOptions = {} } = this.options;
 
 		for (const { selector, outgoing, incoming } of containers) {
 			if (outgoing && incoming) {
-				morph(outgoing, incoming, callbacks);
+				morph(outgoing, incoming, updateCallbacks, morphlexOptions);
 			} else if (this.options.containers.includes(selector)) {
 				console.warn(`SwupMorphPlugin: No container found for selector: ${selector}`);
 			}

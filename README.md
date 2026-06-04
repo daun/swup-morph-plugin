@@ -97,10 +97,8 @@ Array of specific DOM selectors that will be morphed into the new page.
 
 Callbacks to run before elements are updated. This can be used to persist or
 discard certain attributes. If the callback returns `false`, the element will
-not be updated.
-
-See the [Morphlex docs](https://github.com/yippee-fun/morphlex) on
-the `beforeNodeVisited` option for details.
+not be updated. See the [Morphlex docs](https://github.com/yippee-fun/morphlex)
+on the `beforeNodeVisited` option for details.
 
 ```javascript
 {
@@ -115,3 +113,17 @@ the `beforeNodeVisited` option for details.
   ]
 }
 ```
+
+### morphlexOptions
+
+Options to pass to Morphlex when morphing. See the [Morphlex docs](https://github.com/yippee-fun/morphlex#options)
+for available options.
+
+```javascript
+{
+  containers: ['#widget'],
+  morphlexOptions: {
+    // Overwrite form input values with the server value
+    preserveChanges: false
+  }
+}
