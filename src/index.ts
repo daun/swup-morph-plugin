@@ -63,7 +63,7 @@ export default class SwupMorphPlugin extends Plugin {
 		const implicit = queryAll('[data-swup-morph]:not([data-swup-morph=""])').map(
 			(el) => `[data-swup-morph='${el.dataset.swupMorph}']`
 		);
-		return this.uniq([...explit, ...implicit ]);
+		return this.uniq([...explit, ...implicit]);
 	}
 
 	protected uniq<T>(array: T[]): T[] {

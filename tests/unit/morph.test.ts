@@ -46,12 +46,8 @@ describe('morph', () => {
 	});
 
 	it('skips elements marked with data-morph-persist', () => {
-		const from = el(
-			'<nav id="nav"><span data-morph-persist class="keep">old</span></nav>'
-		);
-		const to = el(
-			'<nav id="nav"><span data-morph-persist class="changed">new</span></nav>'
-		);
+		const from = el('<nav id="nav"><span data-morph-persist class="keep">old</span></nav>');
+		const to = el('<nav id="nav"><span data-morph-persist class="changed">new</span></nav>');
 
 		morph(from, to);
 
@@ -61,12 +57,8 @@ describe('morph', () => {
 	});
 
 	it('skips elements nested inside a data-morph-persist container', () => {
-		const from = el(
-			'<nav id="nav" data-morph-persist><a class="old">old</a></nav>'
-		);
-		const to = el(
-			'<nav id="nav" data-morph-persist><a class="new">new</a></nav>'
-		);
+		const from = el('<nav id="nav" data-morph-persist><a class="old">old</a></nav>');
+		const to = el('<nav id="nav" data-morph-persist><a class="new">new</a></nav>');
 
 		morph(from, to);
 

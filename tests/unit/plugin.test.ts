@@ -178,8 +178,7 @@ describe('SwupMorphPlugin', () => {
 
 	describe('content:replace hook', () => {
 		it('validates and morphs containers when the hook runs', async () => {
-			document.body.innerHTML =
-				'<nav id="nav" class="en"></nav><div id="swup"></div>';
+			document.body.innerHTML = '<nav id="nav" class="en"></nav><div id="swup"></div>';
 			mount({ containers: ['#nav'] });
 
 			const visit = createVisit();
