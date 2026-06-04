@@ -56,5 +56,8 @@
   "browserslist": [
     "extends @swup/browserslist-config"
   ],
-  "prettier": "@swup/prettier-config"
+  "prettier": "@swup/prettier-config",
+  "overrides": {
+    "picomatch@^2": "2.3.1"
+  }
 }
