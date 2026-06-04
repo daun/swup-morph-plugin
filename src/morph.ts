@@ -1,22 +1,18 @@
 import { morph as morphlex } from 'morphlex';
 
+/**
+ * Callback to decide whether an element should be morphed.
+ * Return `false` to prevent morphing of this element and its subtree.
+ */
 export type UpdateCallback = (fromEl: HTMLElement, toEl: HTMLElement) => boolean;
 
-type ElementPropertyMap = {
-	[key: string]: boolean;
-};
-
-/**
- * Morph dom nodes using morphlex, adding helpers and callbacks
- */
-
-const inputTags: ElementPropertyMap = {
+const formInputTags: Record<string, boolean> = {
 	INPUT: true,
 	TEXTAREA: true,
 	SELECT: true
 };
 
-const textInputTypes: ElementPropertyMap = {
+const textLikeInputTypes: Record<string, boolean> = {
 	'datetime-local': true,
 	'select-multiple': true,
 	'select-one': true,
@@ -31,51 +27,56 @@ const textInputTypes: ElementPropertyMap = {
 	'search': true,
 	'tel': true,
 	'text': true,
-	'textarea': true,
 	'time': true,
 	'url': true,
 	'week': true
 };
 
-const permanentAttributeName = 'data-morph-persist';
-
 function isTextInput(el: HTMLElement): boolean {
-	return inputTags[el.tagName] && textInputTypes[(el as HTMLInputElement).type];
+	return formInputTags[el.tagName] && textLikeInputTypes[(el as HTMLInputElement).type];
 }
 
-function verifyNotPermanent(fromEl: HTMLElement, toEl: HTMLElement): boolean {
-	const permanent = fromEl.closest(`[${permanentAttributeName}]`);
-
-	// only morph attributes on the active non-permanent text input
-	if (!permanent && isTextInput(fromEl) && fromEl === document.activeElement) {
-		const ignore: ElementPropertyMap = { value: true };
-		Array.from(toEl.attributes).forEach((attribute) => {
-			if (!ignore[attribute.name]) fromEl.setAttribute(attribute.name, attribute.value);
-		});
+/**
+ * Returns `false` for elements that should not be morphed:
+ *
+ * 1. Elements inside a `[data-morph-persist]` container — leave the subtree untouched.
+ * 2. The currently focused text input — sync non-value attributes from the incoming
+ *    DOM so the element stays up-to-date, but skip morphlex processing so the user's
+ *    typed value and cursor position are preserved.
+ */
+function isElementMorphable(fromEl: HTMLElement, toEl: HTMLElement): boolean {
+	if (fromEl.closest('[data-morph-persist]')) {
 		return false;
 	}
 
-	return !permanent;
+	if (isTextInput(fromEl) && fromEl === document.activeElement) {
+		for (const { name, value } of toEl.attributes) {
+			if (name !== 'value') fromEl.setAttribute(name, value);
+		}
+		return false;
+	}
+
+	return true;
 }
 
-const shouldMorphCallbacks = [verifyNotPermanent];
+const builtInCallbacks: UpdateCallback[] = [isElementMorphable];
 
-function shouldMorph(fromEl: HTMLElement, toEl: HTMLElement, callbacks: UpdateCallback[]): boolean {
-	const callbackResults = callbacks.map((callback) => {
-		return typeof callback === 'function' ? callback(fromEl, toEl) : true;
-	});
-	return !callbackResults.includes(false);
-}
-
+/**
+ * Morph DOM nodes using morphlex.
+ */
 function morph(from: ChildNode, to: ChildNode | string, updateCallbacks: UpdateCallback[] = []): void {
-	const callbacks = [...shouldMorphCallbacks, ...updateCallbacks];
+	const callbacks = [...builtInCallbacks, ...updateCallbacks];
+
 	morphlex(from, to, {
 		beforeNodeVisited: (fromNode, toNode) => {
-			// Only run element callbacks for element nodes, skip text/comment nodes
 			if (!(fromNode instanceof HTMLElement) || !(toNode instanceof HTMLElement)) {
 				return true;
 			}
-			return shouldMorph(fromNode, toNode, callbacks);
+
+			// Only morph if no callback cancels it
+			return callbacks
+				.filter((cb) => typeof cb === 'function')
+				.every((cb) => cb(fromNode, toNode) !== false);
 		}
 	});
 }
