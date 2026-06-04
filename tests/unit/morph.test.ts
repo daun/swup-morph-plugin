@@ -45,20 +45,20 @@ describe('morph', () => {
 		expect(from.className).toBe('de');
 	});
 
-	it('skips elements marked with data-morph-persist', () => {
-		const from = el('<nav id="nav"><span data-morph-persist class="keep">old</span></nav>');
-		const to = el('<nav id="nav"><span data-morph-persist class="changed">new</span></nav>');
+	it('skips elements marked with data-swup-morph-ignore', () => {
+		const from = el('<nav id="nav"><span data-swup-morph-ignore class="keep">old</span></nav>');
+		const to = el('<nav id="nav"><span data-swup-morph-ignore class="changed">new</span></nav>');
 
 		morph(from, to);
 
-		const persisted = from.querySelector('[data-morph-persist]')!;
+		const persisted = from.querySelector('[data-swup-morph-ignore]')!;
 		expect(persisted.className).toBe('keep');
 		expect(persisted.textContent).toBe('old');
 	});
 
-	it('skips elements nested inside a data-morph-persist container', () => {
-		const from = el('<nav id="nav" data-morph-persist><a class="old">old</a></nav>');
-		const to = el('<nav id="nav" data-morph-persist><a class="new">new</a></nav>');
+	it('skips elements nested inside a data-swup-morph-ignore container', () => {
+		const from = el('<nav id="nav" data-swup-morph-ignore><a class="old">old</a></nav>');
+		const to = el('<nav id="nav" data-swup-morph-ignore><a class="new">new</a></nav>');
 
 		morph(from, to);
 

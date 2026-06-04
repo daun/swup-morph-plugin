@@ -8,10 +8,10 @@ export type UpdateCallback = (fromEl: HTMLElement, toEl: HTMLElement) => boolean
 
 /**
  * Returns false for elements that should not be morphed.
- * Elements inside a `[data-morph-persist]` container are left completely untouched.
+ * Elements inside a `[data-swup-morph-ignore]` container are left untouched.
  */
 function isElementMorphable(fromEl: HTMLElement): boolean {
-	return !fromEl.closest('[data-morph-persist]');
+	return !fromEl.closest('[data-swup-morph-ignore]');
 }
 
 const builtInCallbacks: UpdateCallback[] = [isElementMorphable];
