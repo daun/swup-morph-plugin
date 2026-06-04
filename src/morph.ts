@@ -90,7 +90,7 @@ function shouldMorph(fromEl: HTMLElement, toEl: HTMLElement, callbacks: UpdateCa
 
 function morph(from: Node, to: Node | string, updateCallbacks: UpdateCallback[] = []): void {
 	const callbacks = [...shouldMorphCallbacks, ...updateCallbacks];
-	return morphdom(from, to, {
+	morphdom(from, to, {
 		onBeforeElUpdated: (fromEl, toEl) => shouldMorph(fromEl, toEl, callbacks)
 	});
 }
