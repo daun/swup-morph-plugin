@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.0.0] - 2026-06-05
+
+- Switch to [Morphlex](https://github.com/yippee-fun/morphlex) for DOM morphing
+- Reduce number of changes required to morph containers
+- Extend test coverage
+
 ## [1.3.0] - 2024-02-15
 
 - Re-use incoming document from visit object
@@ -40,6 +46,7 @@
 
 - Initial release
 
+[2.0.0]: https://github.com/swup-morph-plugin/releases/tag/2.0.0
 [1.3.0]: https://github.com/swup-morph-plugin/releases/tag/1.3.0
 [1.2.1]: https://github.com/swup-morph-plugin/releases/tag/1.2.1
 [1.2.0]: https://github.com/swup-morph-plugin/releases/tag/1.2.0
