@@ -30,6 +30,7 @@ function morph(
 	morphlex(from, to, {
 		preserveChanges: true,
 		beforeNodeVisited: (fromNode, toNode) => {
+			// Callback only runs on elements, not text nodes
 			if (!(fromNode instanceof HTMLElement) || !(toNode instanceof HTMLElement)) {
 				return true;
 			}
